@@ -1,0 +1,16 @@
+         CASH RECEIPT
+Cashier: #0139
+Date: 2022-01-22
+Time: 05:57:49
+-------------------------------
+QTY DESCRIPTION    PRICE  TOTAL
+3   Eggs           $2,10  $6,30
+7   Apple          $2,05  $14,35
+         discount QTY>5: -$1,43
+2   Sugar          $1,60  $3,20
+1   Tea            $3,20  $3,20
+4   Bread          $1,05  $4,20
+-------------------------------
+Total sum:               $31,25
+Discount sum qty>5:      -$1,43
+TOTAL:                   $29,81
