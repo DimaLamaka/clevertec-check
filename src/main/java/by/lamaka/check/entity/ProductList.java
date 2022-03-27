@@ -1,5 +1,6 @@
 package by.lamaka.check.entity;
 
+import by.lamaka.check.exceptions.IdNotFoundException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
@@ -24,7 +25,10 @@ public class ProductList {
         productList.add(new Product(10, "Beer", 2.30));
     }
 
-    public static Product getProductById(int id) {
+    public static Product getProductById(int id) throws IdNotFoundException {
+        if (id > productList.size()) {
+            throw new IdNotFoundException("Id " + id + " not found");
+        }
         return productList.get(id - 1);
     }
 }
