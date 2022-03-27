@@ -15,6 +15,7 @@ import by.lamaka.check.service.util.*;
 import by.lamaka.check.service.validation.Validation;
 import by.lamaka.check.service.validation.impl.ValidationImpl;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class CheckServiceImpl implements CheckService {
     Validation validator;
     CheckDAO checkDAO;

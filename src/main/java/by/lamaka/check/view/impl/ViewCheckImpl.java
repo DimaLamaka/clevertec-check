@@ -1,8 +1,8 @@
-package by.lamaka.check.exceptions.view.impl;
+package by.lamaka.check.view.impl;
 
 import by.lamaka.check.entity.Check;
 import by.lamaka.check.entity.Product;
-import by.lamaka.check.exceptions.view.ViewCheck;
+import by.lamaka.check.view.ViewCheck;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Map;

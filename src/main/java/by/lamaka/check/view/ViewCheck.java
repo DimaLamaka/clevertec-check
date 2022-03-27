@@ -1,4 +1,4 @@
-package by.lamaka.check.exceptions.view;
+package by.lamaka.check.view;
 
 import by.lamaka.check.entity.Check;
 
