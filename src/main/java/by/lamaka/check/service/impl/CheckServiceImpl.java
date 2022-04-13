@@ -2,6 +2,7 @@ package by.lamaka.check.service.impl;
 
 import by.lamaka.check.dao.CheckDAO;
 import by.lamaka.check.dao.impl.ConsoleCheckDAOImpl;
+import by.lamaka.check.dao.impl.DatabaseDAOImpl;
 import by.lamaka.check.dao.impl.FileCheckDAOImpl;
 import by.lamaka.check.entity.DiscountCard;
 import by.lamaka.check.entity.Check;
@@ -17,6 +18,8 @@ import by.lamaka.check.service.validation.impl.ValidationImpl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -25,13 +28,15 @@ import java.util.Map;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@Service
 public class CheckServiceImpl implements CheckService {
     Validation validator;
     CheckDAO checkDAO;
 
-    public CheckServiceImpl() {
+    @Autowired
+    public CheckServiceImpl(DatabaseDAOImpl dao) {
         validator = new ValidationImpl();
-        checkDAO = new ConsoleCheckDAOImpl(new FileCheckDAOImpl());
+        checkDAO = new ConsoleCheckDAOImpl(dao);
     }
 
     public void saveCheck(String[] productList) throws ValidateException, IdNotFoundException, IOException, EmptyProductList {

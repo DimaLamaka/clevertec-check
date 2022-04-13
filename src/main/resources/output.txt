@@ -1,1 +1,15 @@
-Check(productList=null, card=BRONZECARD, localDateTime=2022-03-27T10:13:22.498)
+         CASH RECEIPT
+Cashier: #0139
+Date: 2022-04-10
+Time: 12:11:40
+-------------------------------
+QTY DESCRIPTION    PRICE  TOTAL
+6   Sugar          $1,60  $9,60
+         discount QTY>5: -$0,96
+5   Tea            $3,20  $16,00
+3   Coffee         $5,80  $17,40
+-------------------------------
+Total sum:               $43,00
+Discount sum qty>5:      -$0,96
+Discount by card 10%:    -$4,30
+TOTAL:                   $37,74
