@@ -11,7 +11,14 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Check {
+    Long id;
     Map<Product, Integer> productList;
     DiscountCard card;
     LocalDateTime localDateTime;
+
+    public Check(Map<Product, Integer> productList, DiscountCard card, LocalDateTime localDateTime) {
+        this.productList = productList;
+        this.card = card;
+        this.localDateTime = localDateTime;
+    }
 }
