@@ -5,9 +5,11 @@ import by.lamaka.check.service.util.ProductParser;
 import by.lamaka.check.service.validation.Validation;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@Component
 public class ValidationImpl implements Validation {
     static String REG = "[0-9]+";
 

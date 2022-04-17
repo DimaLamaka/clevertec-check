@@ -2,8 +2,13 @@ package by.lamaka.check.dao.impl;
 
 import by.lamaka.check.dao.CheckDAO;
 import by.lamaka.check.entity.Check;
+import by.lamaka.check.exceptions.MailAuthenticationException;
+import by.lamaka.check.service.listeners.EventManager;
 import by.lamaka.check.entity.Product;
+import by.lamaka.check.service.util.CheckUtil;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,38 +17,33 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class DatabaseDAOImpl implements CheckDAO {
-    private final JdbcTemplate jdbcTemplate;
+    JdbcTemplate jdbcTemplate;
+    EventManager manager;
 
     @Override
-    public void saveCheck(Check check) throws IOException {
-        double totalProdSum = 0;
-        double discountQty = 0;
-        double discountCard = 0;
-        for (Map.Entry<Product, Integer> entry : check.getProductList().entrySet()) {
-            double prodSum = entry.getKey().getPrice() * entry.getValue();
-            totalProdSum += prodSum;
-            if (entry.getValue() > 5) {
-                discountQty += (entry.getKey().getPrice() * entry.getValue()) / 10;
-            }
-        }
-        if (check.getCard() != null) {
-            discountCard = totalProdSum / 100 * check.getCard().getDiscount();
-        }
-        totalProdSum = totalProdSum - discountQty - discountCard;
+    public void saveCheck(Check check) throws IOException, MailAuthenticationException {
+        Map<String, Double> sumsByCheck = CheckUtil.getSumsByCheck(check);
+        double totalDiscSum = sumsByCheck.get("totalDiscSum");
+        double totalDiscSumByCard = sumsByCheck.get("totalDiscSumByCard");
+        double totalSum = sumsByCheck.get("totalSum");
+        Map<Product, Integer> productList = check.getProducts();
 
         jdbcTemplate.update("insert into checks (card,date_time,discount_qty,discount_card,total_price) values (?,?,?,?,?)",
-                check.getCard().toString(), check.getLocalDateTime(), discountQty, discountCard, totalProdSum);
+                check.getCard().toString(), check.getDateTime(), totalDiscSum, totalDiscSumByCard, totalSum);
 
-        Long checkId = jdbcTemplate.queryForObject("select id from checks where card=? AND date_time=? AND total_price=?",
+        Long checkId = jdbcTemplate.queryForObject("select id from checks where card=? AND date_time=?",
                 (rs, rowNum) -> rs.getLong("id"),
-                check.getCard().toString(), check.getLocalDateTime(), totalProdSum);
+                check.getCard().toString(), check.getDateTime());
 
-        Map<Product, Integer> productList = check.getProductList();
         productList.keySet().stream().forEach(p ->
                 jdbcTemplate.update("insert into product_list (check_id,title,price,quantity) values (?,?,?,?)",
                         checkId, p.getTitle(), p.getPrice(), productList.get(p))
 
         );
+
+        manager.addOperation("save in Database");
+        manager.notify("save in Database",check.toString());
     }
 }

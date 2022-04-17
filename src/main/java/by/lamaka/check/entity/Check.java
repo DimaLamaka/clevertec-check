@@ -10,15 +10,10 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Check {
     Long id;
-    Map<Product, Integer> productList;
+    Map<Product, Integer> products;
     DiscountCard card;
-    LocalDateTime localDateTime;
-
-    public Check(Map<Product, Integer> productList, DiscountCard card, LocalDateTime localDateTime) {
-        this.productList = productList;
-        this.card = card;
-        this.localDateTime = localDateTime;
-    }
+    LocalDateTime dateTime;
 }

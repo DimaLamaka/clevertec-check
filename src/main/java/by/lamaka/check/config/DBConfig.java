@@ -1,5 +1,7 @@
 package by.lamaka.check.config;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,23 +17,27 @@ import java.util.Objects;
 @Configuration
 @ComponentScan("by.lamaka.check")
 @PropertySource("classpath:application.properties")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class DBConfig {
 
-    @Autowired
     Environment environment;
+    static String DRIVER_NAME = "driver-name";
+    static String URL = "jdbc-url";
+    static String USER_NAME = "jdbc-username";
+    static String PASSWORD = "jdbc-password";
 
-    private final String driverName = "driver-name";
-    private final String url = "jdbc-url";
-    private final String username = "jdbc-username";
-    private final String password = "jdbc-password";
+    @Autowired
+    public DBConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty(driverName)));
-        dataSource.setUrl(environment.getProperty(url));
-        dataSource.setUsername(environment.getProperty(username));
-        dataSource.setPassword(environment.getProperty(password));
+        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty(DRIVER_NAME)));
+        dataSource.setUrl(environment.getProperty(URL));
+        dataSource.setUsername(environment.getProperty(USER_NAME));
+        dataSource.setPassword(environment.getProperty(PASSWORD));
         return dataSource;
     }
 
