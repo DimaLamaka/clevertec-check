@@ -8,6 +8,7 @@ import by.lamaka.check.view.ViewCheck;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
@@ -15,11 +16,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-@FieldDefaults( level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @Component
 public class FileCheckDAOImpl implements CheckDAO {
-    String path = "src/main/resources/output.txt";
+    @Value("${output.path}")
+    String path;
     ViewCheck viewCheck;
     EventManager manager;
 
@@ -30,7 +32,7 @@ public class FileCheckDAOImpl implements CheckDAO {
             reader.write(checkView);
             reader.flush();
             manager.addOperation("save in file");
-            manager.notify("save in file",checkView);
+            manager.notify("save in file", checkView);
         }
     }
 }

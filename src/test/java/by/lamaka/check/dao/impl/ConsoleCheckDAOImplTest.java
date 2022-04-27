@@ -9,8 +9,7 @@ import by.lamaka.check.view.ViewCheck;
 import by.lamaka.check.view.impl.ViewCheckImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -35,11 +34,6 @@ public class ConsoleCheckDAOImplTest {
         check.setCard(DiscountCard.BRONZECARD);
         check.setDateTime(LocalDateTime.now());
     }
-    /*@Test
-    public void shouldCreateConsoleCheckDAOImplWithoutParams(){
-        CheckDAO checkDAO = new ConsoleCheckDAOImpl();
-        assertNotNull(checkDAO);
-    }*/
 
     @Test
     public void saveCheckShouldSaveCheckInFile() throws IOException, MailAuthenticationException {
