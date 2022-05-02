@@ -3,6 +3,8 @@ package by.lamaka.check.dao.impl;
 import by.lamaka.check.dao.CheckDAO;
 import by.lamaka.check.entity.Check;
 import by.lamaka.check.entity.DiscountCard;
+import by.lamaka.check.exceptions.MailAuthenticationException;
+import by.lamaka.check.service.listeners.EventManager;
 import by.lamaka.check.view.ViewCheck;
 import by.lamaka.check.view.impl.ViewCheckImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,18 +20,20 @@ class FileCheckDAOImplTest {
     private CheckDAO checkDAO;
     private ViewCheck viewCheck;
     private Check check;
+    private EventManager eventManager;
 
     @BeforeEach
     public void setUp() {
         viewCheck = mock(ViewCheckImpl.class);
-        checkDAO = new FileCheckDAOImpl(viewCheck);
+        eventManager = mock(EventManager.class);
+        checkDAO = new FileCheckDAOImpl(viewCheck,eventManager);
         check = new Check();
         check.setCard(DiscountCard.BRONZECARD);
-        check.setLocalDateTime(LocalDateTime.now());
+        check.setDateTime(LocalDateTime.now());
     }
 
     @Test
-    public void saveCheckShouldSuccess() throws IOException {
+    public void saveCheckShouldSuccess() throws IOException, MailAuthenticationException {
         String excepted = check.toString();
         when(viewCheck.getView(check)).thenReturn(excepted);
 

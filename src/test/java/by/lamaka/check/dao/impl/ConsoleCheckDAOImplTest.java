@@ -3,10 +3,13 @@ package by.lamaka.check.dao.impl;
 import by.lamaka.check.dao.CheckDAO;
 import by.lamaka.check.entity.Check;
 import by.lamaka.check.entity.DiscountCard;
+import by.lamaka.check.exceptions.MailAuthenticationException;
+import by.lamaka.check.service.listeners.EventManager;
 import by.lamaka.check.view.ViewCheck;
 import by.lamaka.check.view.impl.ViewCheckImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -19,30 +22,27 @@ public class ConsoleCheckDAOImplTest {
     private ViewCheck viewCheck;
     private Check check;
     private ConsoleCheckDAOImpl consoleCheckDAO;
+    private EventManager manager;
 
     @BeforeEach
     public void setUp() {
         checkDAO = mock(FileCheckDAOImpl.class);
         viewCheck = mock(ViewCheckImpl.class);
-        consoleCheckDAO = new ConsoleCheckDAOImpl(checkDAO, viewCheck);
+        manager = mock(EventManager.class);
+        consoleCheckDAO = new ConsoleCheckDAOImpl(checkDAO, viewCheck,manager);
         check = new Check();
         check.setCard(DiscountCard.BRONZECARD);
-        check.setLocalDateTime(LocalDateTime.now());
-    }
-    @Test
-    public void shouldCreateConsoleCheckDAOImplWithoutParams(){
-        CheckDAO checkDAO = new ConsoleCheckDAOImpl();
-        assertNotNull(checkDAO);
+        check.setDateTime(LocalDateTime.now());
     }
 
     @Test
-    public void saveCheckShouldSaveCheckInFile() throws IOException {
+    public void saveCheckShouldSaveCheckInFile() throws IOException, MailAuthenticationException {
         consoleCheckDAO.saveCheck(check);
         verify(checkDAO, times(1)).saveCheck(check);
     }
 
     @Test
-    public void saveCheckShouldGetViewCheck() throws IOException {
+    public void saveCheckShouldGetViewCheck() throws IOException, MailAuthenticationException {
         String excepted = check.toString();
         when(viewCheck.getView(check)).thenReturn(excepted);
         consoleCheckDAO.saveCheck(check);

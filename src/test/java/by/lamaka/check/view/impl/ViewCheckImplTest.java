@@ -23,11 +23,11 @@ class ViewCheckImplTest {
         check = new Check();
         viewCheck = new ViewCheckImpl();
         check.setCard(DiscountCard.BRONZECARD);
-        check.setLocalDateTime(LocalDateTime.of(2021,3,20,20,14,33));
+        check.setDateTime(LocalDateTime.of(2021,3,20,20,14,33));
         Map<Product,Integer> productList = new HashMap<>();
         productList.put(new Product(9, "Cookie", 1.70),10);
         productList.put(new Product(8, "Tea", 3.20),2);
-        check.setProductList(productList);
+        check.setProducts(productList);
     }
 
     @Test
